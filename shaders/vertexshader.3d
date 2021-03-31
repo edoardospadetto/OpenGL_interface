@@ -1,0 +1,40 @@
+#version 330
+in vec3 svert;
+in vec2 stex; 
+
+out vec2 TexCoord;
+
+uniform mat4 sview;
+
+
+void main()
+{ 
+
+    // 1) Object arrives with up pointing to z, front to y, and right to x, also camera in this coordinates
+    // Move camera to origin, translate object , and look at certain direction.
+    
+    vec4 pos = sview*vec4( svert, 1.0)  ;   
+    
+    // 2)  Now move to OPENGL coordinates front is -z , x right, y up.
+    pos = vec4(pos.x, pos.z, -pos.y,  1.0 );
+    
+    // 3) Apply Perspective given a certain distance of the focal point  
+    
+                                            //*vec4( svert.x/(-svert.z-5.1), svert.y/(-svert.z-5.1), max(-svert.z+1, -5) /100.0,  1 );
+    
+    float zper;
+    
+    if(pos.z < -2.5)
+    {
+    	zper = pos.z/ 500.0;
+    }
+    else
+    {
+    	zper = -10;
+    }
+    
+    gl_Position =  vec4( -pos.x*2.5/pos.z,   -pos.y*2.5/pos.z , zper ,1.0);// -(pos.z-1.0)/100.0 ,  1.0 );
+    
+    TexCoord = stex;
+    
+}
