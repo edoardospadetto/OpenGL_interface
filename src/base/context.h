@@ -11,6 +11,7 @@ class Context {
 		int width, height; 
 		std::string title;
 		SDL_Window* window = nullptr;
+		SDL_GLContext glContext;
 		float xMouse=0.0, yMouse=0.0;
 		bool quit = false;
 		
@@ -21,7 +22,8 @@ class Context {
  		Context(int _width, int _height, const std::string& _name );
 		~Context();
 		
-		int GraphicLoop(int delay, Drawer* drawer, Asset *asset);
+		void Imgui();
+		
 		void movecameradebug(SDL_Event e);
 		
 		void StartFrame();
@@ -33,6 +35,7 @@ class Context {
 		
 		bool IsValid();
 		void Quit();
+		SDL_Window* GetWindow(); 
 		
 	
 };

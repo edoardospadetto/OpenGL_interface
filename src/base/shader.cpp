@@ -1,14 +1,14 @@
 #include "turtle.h"
 
-Shader::Shader(std::string&& path, GLuint type_ )
+Shader::Shader(std::string&& path_, GLuint type_ ) : path(path_)
 {	
 
 	
 	id = glCreateShader( type_ );
-	std::ifstream buffer(path,std::ios::binary|std::ios::ate);
+	std::ifstream buffer(path_,std::ios::binary|std::ios::ate);
 	if (!buffer) 
 	{
-		printf("Failed to open :%s  \n ", path.c_str());
+		printf("Failed to open :%s  \n ", path_.c_str());
 	} 
 	else 
 	{
@@ -46,7 +46,7 @@ int Shader::Compile()
 		    int length;	
 		    glGetShaderiv( id, GL_INFO_LOG_LENGTH, &length);
 		    char* info = new char[ length ];
-		    printf( "Unable to compile shader %d!\n", id );
+		    printf( "Unable to compile shader %d, %s!\n", id, path.c_str() );
 		    glGetShaderInfoLog( id, length, &length, info );
 		    printf("%s", info);
 		    delete[] info ;

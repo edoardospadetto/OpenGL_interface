@@ -16,35 +16,35 @@ class Asset
 {
 
 	private:
-		
-		
-	
+
+
+
 		float* vert;
 		float* textr;
 		float* norm;
-		
+
 		int* idx;
 		float* buffer;
-		
+
 		int idxnum;
 		int vertnum;
 	public: 
-		
+
 		Texture texture; 
-		
+
 		Asset();
-		void Rotate();
+		Asset(std::string&& model_path,std::string&& texture_path);
+		
+		
 		int LoadObj(std::string&& path_);
 		int LoadTexture(const char *path);
-		
-		 float* GetBuffer();
-		 int* GetIdx();
-		 int GetIdxNum();
-		 int GetVertNum();
-		
+
+		float* GetBuffer();
+		int* GetIdx();
+		int GetIdxNum();
+		int GetVertNum();
+
 		~Asset();
-		
-		
 
 };
 

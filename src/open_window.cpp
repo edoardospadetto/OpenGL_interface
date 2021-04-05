@@ -3,9 +3,12 @@
 
 #include <thread> 
 
-#include "./base/turtle.h"
-#include "drawer3d.h"
-#include "orientation.h"
+#include <turtle.h>
+#include "./drawers/drawer3d.h"
+#include "./drawers/orientation.h"
+#include "./drawers/terrain.h"
+#include "game.cpp"
+
 
 int WorldLoop(Context* current_context, Camera* camera)
 {
@@ -20,7 +23,7 @@ int WorldLoop(Context* current_context, Camera* camera)
 	return 0;
 }
 
-int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, Asset* asset, Camera* camera)
+int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, Terrain *terrain, Asset* asset, Camera* camera)
 {
 		//Drawer3d* drawer1=  dynamic_cast<Drawer3d*>(drawer);
 		
@@ -33,8 +36,21 @@ int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, A
 			//asset->Rotate();
 			
 			
+			
 			drawer->Draw(asset, camera);
 			orientation->Draw(camera);
+			terrain->Draw(camera);
+			    ImGui_ImplOpenGL3_NewFrame();
+		    ImGui_ImplSDL2_NewFrame(current_context->GetWindow());
+		    ImGui::NewFrame();
+		    ImGui::Begin("Hello, world!");                          
+		    ImGui::Text("This is some useful text.");           
+		    ImGui::End();
+	            ImGui::Render();
+	            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		
+			
+			
 			
 			current_context->EndFrame();
 		}
@@ -48,40 +64,7 @@ return 0;
 
 int InputLoop(Context* current_context, Camera* camera)
 {	
-	int xMouse, yMouse;
-	SDL_Event event;
-	while(current_context->IsValid()){
-	
-		SDL_Delay(20);
-		
-		while( SDL_PollEvent( &event ))
-		{
-			switch (event.type) 
-			{
-				case SDL_QUIT :
-					current_context->Quit();
-					std::cout << "exit input thread" << std::endl;
-					return 0; 
-					break;
-				
-				case SDL_MOUSEMOTION:
-				    current_context->SetMouseCoords();
-				
-				case SDL_KEYDOWN:
-				   camera->debuginput(event);
-				    break;
-				
-				case SDL_KEYUP:
-				    camera->debuginput(event);;
-				    break;
-			}
-		}
-		float x, y;
-		current_context->GetMouseCoords(x,y);
-		camera->Mouse2Look(x,y);	
-		
-	}
-	
+	GameInput(current_context,camera);
 	return 0 ;
 }
 
@@ -94,10 +77,11 @@ int main()
 	Drawer3d* drawer= new Drawer3d();
 	Gui* orientation = new Gui();
 	Camera* camera = new Camera();
+	Terrain * terrain = new Terrain();
 	
-	Asset zero;
-	zero.LoadObj("./assets/houseplant3.obj");
-	zero.LoadTexture("./assets/plant.tga");	
+	terrain->LinkVerts();
+	
+	GameObj3d zero("./assets/houseplant3.obj","./assets/plant.tga", "plant0");
 	
 	Shader vertex3d("./shaders/vertexshader.3d", GL_VERTEX_SHADER);
 	Shader fragment3d("./shaders/fragmentshader.3d", GL_FRAGMENT_SHADER);
@@ -105,21 +89,27 @@ int main()
 	Shader orv("./shaders/orv.3d", GL_VERTEX_SHADER);
 	Shader orf("./shaders/orf.3d", GL_FRAGMENT_SHADER);
 	
+	Shader terrainv("./shaders/terrainv.3d", GL_VERTEX_SHADER);
+	Shader terrainf("./shaders/terrainf.3d", GL_FRAGMENT_SHADER);
+	
 	fragment3d.Compile();
 	vertex3d.Compile();
+	
+	terrainv.Compile();
+	terrainf.Compile();
 	
 	orv.Compile();
 	orf.Compile();
 	
 	orientation->LoadShaders(&orv, &orf);
 	drawer->LoadShaders(&vertex3d, &fragment3d);
-	
+	terrain->LoadShaders(&terrainv,&terrainf);
 	orientation->LoadShaders(&orv,&orf);
 	
 
 	std::thread HandleInput(InputLoop,test, camera);
 	std::thread HandleWorld(WorldLoop,test,camera );
-	GraphicLoop(test,  drawer, orientation, &zero, camera );
+	GraphicLoop(test,  drawer, orientation, terrain, zero.GetAsset(), camera );
 	std::cout << "exit1 " << std::endl;
 	HandleInput.join();
 	std::cout << "exit2 " << std::endl;
@@ -128,7 +118,6 @@ int main()
 	
 	
 	delete drawer;
-	delete test;
 	delete orientation;
 	delete test;
 	

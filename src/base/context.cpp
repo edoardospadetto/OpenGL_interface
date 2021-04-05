@@ -29,7 +29,7 @@ Context::Context(int _width, int _height, const std::string& _name ) : width(_wi
     }
     
   
-    SDL_GLContext glContext = SDL_GL_CreateContext( window );
+     glContext = SDL_GL_CreateContext( window );
     
     if(glContext == NULL)
     {
@@ -53,7 +53,10 @@ Context::Context(int _width, int _height, const std::string& _name ) : width(_wi
     //CUSTOM INIT
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_FALSE);  
-    glDepthFunc(GL_LESS);  
+    glDepthFunc(GL_LESS); 
+    
+    //Imgui
+    Imgui(); 
     
 }
 
@@ -118,5 +121,22 @@ void Context::EndFrame()
 	//std::cout << "end frame" << std::endl;
 	SDL_GL_SwapWindow(window);
 }
+
+
+void Context::Imgui()
+{
+    const char* glsl_version = "#version 330";
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsClassic();
+    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+
+
+}
+
+SDL_Window* Context::GetWindow(){return window;}
+
+
 
 

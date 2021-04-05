@@ -13,12 +13,19 @@ Asset::Asset()
 
 }
 
+Asset::Asset(std::string&& model_path, std::string&& texture_path )
+{
+	LoadObj(std::move(model_path));
+	LoadTexture(texture_path.c_str());	
+
+}
+
 Asset::~Asset()
 {
-	delete[] vert;
+	//delete[] vert;
 	delete[] idx; 
-	delete[] norm;
-	delete[] textr;
+	//delete[] norm;
+	//delete[] textr;
 	delete[] buffer;
 	stbi_image_free(texture.data);
 
@@ -35,13 +42,7 @@ void swapiflarger(float &a, float &b)
 }
 
 
-void Asset::Rotate()
-{
-	for (int i =0; i<vertnum; i++){
-		vert[i*3] = vert[i*3]+0.01;
-	
-	}
-}
+
 
 int Asset::LoadObj( std::string&& path_)
 {

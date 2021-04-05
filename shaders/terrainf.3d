@@ -1,0 +1,11 @@
+#version 330 core
+
+in vec3 col;
+in vec3 norm;
+out vec4 LFragment; 
+void main() 
+{ 
+    vec3 light = vec3(0.75,0.0,0.2);
+    LFragment = vec4( col, 1.0 )*  abs((((light.x*norm.x) + (light.y*norm.y) + (light.z*norm.z) )));// ((norm.x * light.x)+(norm.z * light.z)) ; 
+}
+        

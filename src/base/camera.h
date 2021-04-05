@@ -2,8 +2,7 @@
 #define CAMERA
 #include "turtle.h"
 #include <math.h>
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp> 
+
 #include <iostream>
 class Camera
 {	
@@ -11,7 +10,9 @@ class Camera
 
 		glm::vec3 position {0.0,-5.0,2.0};
 		glm::vec3 look {0.0,1.0,0.0} ;
-		glm::mat4 view , half;
+		glm::mat4 projection, view , half;
+		glm::vec3 horizon ;
+		float yaw=0, pitch=0; 
 		
 		
 		
