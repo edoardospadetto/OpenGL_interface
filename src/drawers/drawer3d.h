@@ -1,9 +1,10 @@
 
-
 #ifndef DRAWER3D
 #define DRAWER3D
+
 #include <turtle.h>
 
+class GameObj3d;
 class Camera;
 
 class Drawer3d: public Drawer
@@ -12,9 +13,11 @@ class Drawer3d: public Drawer
 		GLuint pos;
 		GLuint tex;
 		GLuint view;
+		GLuint mod;
+		GameObj3d *obj;
 	public:
 		Drawer3d();
-		
+		void SetModel(GameObj3d &obj_);
 		
 		const void* GetVert(const Asset *asset);
 		const void* GetIdx(const Asset *asset);

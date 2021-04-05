@@ -39,8 +39,10 @@ int Drawer3d::LoadAsset(Asset *asset, Camera *camera)
 	 pos = glGetAttribLocation( program , "svert" );
 	 tex = glGetAttribLocation( program , "stex" );
 	 view = glGetUniformLocation( program , "sview" );
+	 mod = glGetUniformLocation( program , "modl" );
 
 	 glUniformMatrix4fv(view,1, false,  camera->GetViewMatrix() );
+	 glUniformMatrix4fv(mod,1, false,  obj->GetModMatrix());
 	
 	 glVertexAttribPointer( pos, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0  );	 
 	 glVertexAttribPointer( tex, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(float), (void*)(3*sizeof(float)) );	
@@ -65,6 +67,11 @@ int Drawer3d::Render(Asset* asset)
 	 glDisable( GL_TEXTURE_2D ); 
 	
 	return 0;
+}
+
+void Drawer3d::SetModel(GameObj3d& mod)
+{
+	obj = &mod;
 }
 
 

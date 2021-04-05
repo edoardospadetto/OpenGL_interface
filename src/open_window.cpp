@@ -23,10 +23,11 @@ int WorldLoop(Context* current_context, Camera* camera)
 	return 0;
 }
 
-int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, Terrain *terrain, Asset* asset, Camera* camera)
-{
+int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, Terrain *terrain, GameObj3d* zero, Camera* camera)
+{	
+		float x,y,z;
 		//Drawer3d* drawer1=  dynamic_cast<Drawer3d*>(drawer);
-		
+		drawer->SetModel(*zero);
 		while(current_context->IsValid())
 		{
 			current_context->StartFrame();
@@ -37,17 +38,21 @@ int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, T
 			
 			
 			
-			drawer->Draw(asset, camera);
+			drawer->Draw(zero->GetAsset(), camera);
 			orientation->Draw(camera);
 			terrain->Draw(camera);
 			    ImGui_ImplOpenGL3_NewFrame();
 		    ImGui_ImplSDL2_NewFrame(current_context->GetWindow());
 		    ImGui::NewFrame();
 		    ImGui::Begin("Hello, world!");                          
-		    ImGui::Text("This is some useful text.");           
+		    ImGui::Text("This is some useful text.");  
+		    ImGui::InputFloat("x ", &x, 0.01f, 1.0f, "%.3f"); 
+		    ImGui::InputFloat("y ", &y, 0.01f, 1.0f, "%.3f"); 
+		    ImGui::InputFloat("z ", &z, 0.01f, 1.0f, "%.3f");         
 		    ImGui::End();
 	            ImGui::Render();
 	            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	            zero->SetRot(x,y,z);
 		
 			
 			
@@ -109,7 +114,7 @@ int main()
 
 	std::thread HandleInput(InputLoop,test, camera);
 	std::thread HandleWorld(WorldLoop,test,camera );
-	GraphicLoop(test,  drawer, orientation, terrain, zero.GetAsset(), camera );
+	GraphicLoop(test,  drawer, orientation, terrain, &zero, camera );
 	std::cout << "exit1 " << std::endl;
 	HandleInput.join();
 	std::cout << "exit2 " << std::endl;

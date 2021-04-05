@@ -57,6 +57,7 @@ void GameObj3d::SetPos(float x , float y, float z){
 	pos[0] = x;
 	pos[1] = y;
 	pos[2] = z;
+	ComputeModelMatrix();
 }
 
 
@@ -65,6 +66,7 @@ void GameObj3d::SetRot(float x , float y, float z){
 	rot[0] = x;
 	rot[1] = y;
 	rot[2] = z;
+	ComputeModelMatrix();
 
 }
 
@@ -73,10 +75,15 @@ void GameObj3d::SetScale(float x , float y, float z){
 	scale[0] = x;
 	scale[1] = y;
 	scale[2] = z;
+	ComputeModelMatrix();
 
 }
 
 Asset* GameObj3d::GetAsset(){return asset;}
+
+float* GameObj3d::GetModMatrix(){return &(model_matrix[0][0]);}
+
+
 
 GameObj3d::~GameObj3d()
 {

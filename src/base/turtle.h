@@ -18,12 +18,13 @@
 #include "imgui/backends/imgui_impl_sdl.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
+#include "gameobj3d.h"
 #include "camera.h"
 #include "context.h"
 #include "shader.h"
 #include "asset.h"
 #include "drawer.h"
-#include "gameobj3d.h"
+
 
 
 
