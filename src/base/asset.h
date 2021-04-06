@@ -28,6 +28,8 @@ class Asset
 
 		int idxnum;
 		int vertnum;
+		
+		float position[3] = {};
 	public: 
 
 		Texture texture; 
@@ -43,6 +45,7 @@ class Asset
 		int* GetIdx();
 		int GetIdxNum();
 		int GetVertNum();
+		float* GetPos();
 
 		~Asset();
 

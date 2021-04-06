@@ -83,6 +83,10 @@ Asset* GameObj3d::GetAsset(){return asset;}
 
 float* GameObj3d::GetModMatrix(){return &(model_matrix[0][0]);}
 
+float* GameObj3d::GetScale(){return &(scale[0]);}
+float* GameObj3d::GetRot(){return &(rot[0]);}
+float* GameObj3d::GetPos(){return &(pos[0]);}
+
 
 
 GameObj3d::~GameObj3d()

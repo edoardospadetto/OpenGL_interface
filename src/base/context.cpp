@@ -3,7 +3,7 @@
 
 
 
-Context::Context(int _width, int _height, const std::string& _name ) : width(_width) , height(_height)
+Context::Context(int _width, int _height, const std::string& _name ) : window_width(_width) , window_height(_height)
 {	
    if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -55,8 +55,7 @@ Context::Context(int _width, int _height, const std::string& _name ) : width(_wi
     glDepthMask(GL_FALSE);  
     glDepthFunc(GL_LESS); 
     
-    //Imgui
-    Imgui(); 
+
     
 }
 
@@ -70,15 +69,15 @@ Context::~Context()
 void Context::SetMouseCoords()
 {	int x, y;
 	SDL_GetMouseState(&x,&y);
-	xMouse = float(x)/float(width) -0.5;
-	yMouse = - float(y)/float(height) +0.5;
+	xMouse = float(x) -float(window_width)*0.5;
+	yMouse = - float(y) +float(window_height)*0.5;
 		
 }
 
 void Context::GetMouseCoords(float &x, float&y)
 {
-	x = xMouse;
-	y = yMouse;
+	x = xMouse/float(window_width) ;
+	y = yMouse/float(window_height) ;
 }
 
 
@@ -122,21 +121,27 @@ void Context::EndFrame()
 	SDL_GL_SwapWindow(window);
 }
 
-
-void Context::Imgui()
+void Context::SetViewPort(int x , int y , int w , int h)
 {
-    const char* glsl_version = "#version 330";
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsClassic();
-    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
+	viewport_x = x; 
+	viewport_y = y; 
+	viewport_width = w; 
+	viewport_height = h ; 
+	
+	glViewport(x,y,w,h);
 
 }
 
+
+
 SDL_Window* Context::GetWindow(){return window;}
 
+void Context::GetWindowSize(int & w, int& h){ w = window_width; h= window_height;  }
 
+SDL_GLContext Context::GetSDLGLcontext()
+{
+	return glContext;
+
+}
 
 

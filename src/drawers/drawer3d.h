@@ -18,7 +18,7 @@ class Drawer3d: public Drawer
 	public:
 		Drawer3d();
 		void SetModel(GameObj3d &obj_);
-		
+		void LoadUniforms(Camera * camera);
 		const void* GetVert(const Asset *asset);
 		const void* GetIdx(const Asset *asset);
 		int GetNumVert(const Asset *asset);

@@ -6,10 +6,41 @@ Drawer3d::Drawer3d()
 
 }
 
+void Drawer3d::LoadUniforms(Camera * camera)
+{
+	
+	 view = glGetUniformLocation( program , "sview" );
+	 mod = glGetUniformLocation( program , "modl" );
+
+	 glUniformMatrix4fv(view,1, false,  camera->GetViewMatrix() );
+	 glUniformMatrix4fv(mod,1, false,  obj->GetModMatrix());
+}
+
+void Drawer3d::DrawPoint(float x , float y, float z)
+{
+	 pos = glGetAttribLocation( program , "svert" );
+	 tex = glGetAttribLocation( program , "stex" );
+	  
+	 glVertexAttribPointer( pos, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0  );	 
+	 glVertexAttribPointer( tex, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(float), (void*)(1*sizeof(float)) );
+	
+	 glEnableVertexAttribArray( pos);
+	 glEnableVertexAttribArray( tex);
+	 
+	 glDisableVertexAttribArray( pos);
+	 glDisableVertexAttribArray( tex);
+	  
+
+
+}
+
 void Drawer3d::Draw(Asset *asset, Camera *camera )
 {
 	LoadAsset(asset,camera);
+	LoadUniforms(camera);
 	Render(asset);
+	
+		
 
 }
 
@@ -34,15 +65,10 @@ int Drawer3d::LoadAsset(Asset *asset, Camera *camera)
 	
 	 glBufferData( GL_ELEMENT_ARRAY_BUFFER, asset->GetIdxNum()*sizeof(int) , ((int*) asset->GetIdx()), GL_DYNAMIC_DRAW );
 	 
-	 
-
-	 pos = glGetAttribLocation( program , "svert" );
+	  pos = glGetAttribLocation( program , "svert" );
 	 tex = glGetAttribLocation( program , "stex" );
-	 view = glGetUniformLocation( program , "sview" );
-	 mod = glGetUniformLocation( program , "modl" );
 
-	 glUniformMatrix4fv(view,1, false,  camera->GetViewMatrix() );
-	 glUniformMatrix4fv(mod,1, false,  obj->GetModMatrix());
+
 	
 	 glVertexAttribPointer( pos, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0  );	 
 	 glVertexAttribPointer( tex, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(float), (void*)(3*sizeof(float)) );	

@@ -24,6 +24,7 @@
 #include "shader.h"
 #include "asset.h"
 #include "drawer.h"
+#include "editor.h"
 
 
 

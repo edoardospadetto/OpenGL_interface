@@ -26,6 +26,11 @@ class GameObj3d
         void SetRot(float x , float y, float z);
         void SetPos(float x , float y, float z);
         
+        float* GetScale();
+        float* GetRot();
+        float* GetPos();
+        
+        
         Asset* GetAsset();
 
 

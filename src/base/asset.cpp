@@ -63,9 +63,9 @@ int Asset::LoadObj( std::string&& path_)
 	 
 	  for(int i=0; i< curMesh.Vertices.size(); ++i)
 	 {
-	 	avgx+=   curMesh.Vertices[i].Position.X;
-	 	avgy+=  curMesh.Vertices[i].Position.Y;
-	 	avgz+= curMesh.Vertices[i].Position.Z;
+	 	avgx+=curMesh.Vertices[i].Position.X;
+	 	avgy+=curMesh.Vertices[i].Position.Y;
+	 	avgz+=curMesh.Vertices[i].Position.Z;
 	 	swapiflower( curMesh.Vertices[i].TextureCoordinate.X, minx);
 	 	swapiflarger(curMesh.Vertices[i].TextureCoordinate.X, maxx);
 	 	swapiflower(curMesh.Vertices[i].TextureCoordinate.Y, miny);
@@ -77,6 +77,12 @@ int Asset::LoadObj( std::string&& path_)
 	 avgx*=(1.0/curMesh.Vertices.size());
 	 avgy*= (1.0/curMesh.Vertices.size());
 	 avgz*=(1.0/curMesh.Vertices.size());
+	 
+	 position[0] = avgx;
+	 position[1] = avgy;
+	 position[2] = avgz;
+	 
+	 
 	 for(int i=0; i< curMesh.Vertices.size(); ++i)
 	 {
 	 	buffer[5*i+0] =  ( curMesh.Vertices[i].Position.X -avgx)/25.0;
@@ -139,5 +145,12 @@ return 0;
  int Asset::GetVertNum()
  {
  	return(vertnum);
+ }
+ 
+ float* Asset::GetPos()
+ {
+ 
+ 	return &(position[0]);
+ 
  }
 

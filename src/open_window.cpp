@@ -25,13 +25,13 @@ int WorldLoop(Context* current_context, Camera* camera)
 
 int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, Terrain *terrain, GameObj3d* zero, Camera* camera)
 {	
-		float x,y,z;
+		Editor editor(current_context, "#version 330" );
 		//Drawer3d* drawer1=  dynamic_cast<Drawer3d*>(drawer);
 		drawer->SetModel(*zero);
 		while(current_context->IsValid())
 		{
 			current_context->StartFrame();
-		
+			editor.StartFrame();
 			
 			glClearColor( 0.2f, 0.f, 0.f, 0.1f );
 			//asset->Rotate();
@@ -39,24 +39,28 @@ int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, T
 			
 			
 			drawer->Draw(zero->GetAsset(), camera);
+			
+			//terrain->Draw(camera);
+			editor.EditObjModel(zero);
+			editor.WatchFrom(zero, camera);
 			orientation->Draw(camera);
-			terrain->Draw(camera);
-			    ImGui_ImplOpenGL3_NewFrame();
-		    ImGui_ImplSDL2_NewFrame(current_context->GetWindow());
-		    ImGui::NewFrame();
-		    ImGui::Begin("Hello, world!");                          
-		    ImGui::Text("This is some useful text.");  
-		    ImGui::InputFloat("x ", &x, 0.01f, 1.0f, "%.3f"); 
-		    ImGui::InputFloat("y ", &y, 0.01f, 1.0f, "%.3f"); 
-		    ImGui::InputFloat("z ", &z, 0.01f, 1.0f, "%.3f");         
-		    ImGui::End();
-	            ImGui::Render();
-	            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	            zero->SetRot(x,y,z);
+			editor.Dot();
+			camera->UpdateViewMatrix();
+
+		       
+		       
+		    
+		                            
+	
+		        
+		  
+	            
+	   
+	            
 		
 			
 			
-			
+			editor.EndFrame();
 			current_context->EndFrame();
 		}
 		std::cout << "exit graphic thread" << std::endl;
