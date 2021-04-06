@@ -25,7 +25,7 @@ int WorldLoop(Context* current_context, Camera* camera)
 
 int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, Terrain *terrain, GameObj3d* zero, Camera* camera)
 {	
-		Editor editor(current_context, "#version 330" );
+		Editor editor(current_context, camera, "#version 330" );
 		//Drawer3d* drawer1=  dynamic_cast<Drawer3d*>(drawer);
 		drawer->SetModel(*zero);
 		while(current_context->IsValid())
@@ -42,7 +42,7 @@ int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, T
 			
 			//terrain->Draw(camera);
 			editor.EditObjModel(zero);
-			editor.WatchFrom(zero, camera);
+			editor.WatchFrom(zero);
 			orientation->Draw(camera);
 			editor.Dot();
 			camera->UpdateViewMatrix();
