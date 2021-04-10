@@ -40,7 +40,7 @@ class Asset
 		
 		int LoadObj(std::string&& path_);
 		int LoadTexture(const char *path);
-
+		void ResetOrigin();
 		float* GetBuffer();
 		int* GetIdx();
 		int GetIdxNum();

@@ -16,7 +16,9 @@ class Context {
 		SDL_GLContext glContext;
 		float xMouse=0.0, yMouse=0.0;
 		bool quit = false;
-		 
+		
+		Editor *editor= nullptr;
+		
 	
 		int delay=20;
 		int start = 0;
@@ -45,7 +47,9 @@ class Context {
 		
 		SDL_Window* GetWindow(); 
 		
-	
+		//Editor
+		void Bind(Editor * editor_ );
+		void SetMouseButton(SDL_MouseButtonEvent& b);
 };
 
 #endif

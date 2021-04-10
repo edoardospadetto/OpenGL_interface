@@ -72,7 +72,7 @@ void Terrain::LinkVerts()
 		}
 	}
 	
-	for(int i =0; i<100; i++)
+	/*for(int i =0; i<100; i++)
 	{
 		for (int j=0; j<100; j++)
 		{
@@ -83,7 +83,7 @@ void Terrain::LinkVerts()
 			std::cout <<  verts[9*(i*100+j)+8] << std::endl;
 		
 		}
-	}
+	}*/
 	
 
 

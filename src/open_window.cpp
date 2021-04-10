@@ -25,7 +25,7 @@ int WorldLoop(Context* current_context, Camera* camera)
 
 int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, Terrain *terrain, GameObj3d* zero, Camera* camera)
 {	
-		Editor editor(current_context, camera, "#version 330" );
+		Editor editor(current_context, camera,"./shaders/editorv.3d", "./shaders/editorf.3d", "#version 330" );
 		//Drawer3d* drawer1=  dynamic_cast<Drawer3d*>(drawer);
 		drawer->SetModel(*zero);
 		while(current_context->IsValid())
@@ -44,8 +44,9 @@ int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, T
 			editor.EditObjModel(zero);
 			editor.WatchFrom(zero);
 			orientation->Draw(camera);
-			editor.Dot();
+			editor.RiggerWindow();
 			camera->UpdateViewMatrix();
+			editor.Dot();
 
 		       
 		       
@@ -90,7 +91,7 @@ int main()
 	
 	terrain->LinkVerts();
 	
-	GameObj3d zero("./assets/houseplant3.obj","./assets/plant.tga", "plant0");
+	GameObj3d zero("./assets/stone.obj","./assets/plant.tga", "plant0");
 	
 	Shader vertex3d("./shaders/vertexshader.3d", GL_VERTEX_SHADER);
 	Shader fragment3d("./shaders/fragmentshader.3d", GL_FRAGMENT_SHADER);

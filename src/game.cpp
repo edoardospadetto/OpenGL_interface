@@ -18,8 +18,10 @@ int xMouse, yMouse;
 					break;
 				
 				case SDL_MOUSEMOTION:
-				    current_context->SetMouseCoords();
-				  
+				    current_context->SetMouseCoords(); 
+				    
+				case SDL_MOUSEBUTTONDOWN:
+				  	current_context->SetMouseButton(event.button);
 				
 				case SDL_KEYDOWN:
 				   camera->debuginput(event);

@@ -70,7 +70,7 @@ void Camera::UpdateViewMatrix()
 	view = glm::lookAt(position, look+position, glm::vec3(0,0,1) );
 	
 	half = glm::translate(view, +position);
-	
+	//std::cout << position.x << "  " << position.y << "  " << position.z << std::endl;
 	if(design)
 	{
 		projection = glm::ortho(-orthox,orthox,-orthoy,orthoy,0.1f,50.0f);
@@ -130,7 +130,7 @@ void Camera::Mouse2Look(float x, float y)
 
 void Camera::debuginput(SDL_Event e)
 {
-	float speed= 0.0; 
+	
 	
 	switch(e.type)
 	{
@@ -152,11 +152,11 @@ void Camera::debuginput(SDL_Event e)
 			switch(e.key.keysym.sym)
 			{
 			    case SDLK_w:
-			    
+			    	speed = 0.0;
 				move = false;
 			    	break;
 			     case SDLK_s:
-			    
+			        speed = 0.0;
 				move = false;
 				break;
 			 }

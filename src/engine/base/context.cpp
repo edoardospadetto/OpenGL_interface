@@ -5,16 +5,20 @@
 
 Context::Context(int _width, int _height, const std::string& _name ) : window_width(_width) , window_height(_height)
 {	
+
+
+    
    if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         printf("Failed to initialize the SDL2 library\n");
       
     }
-    //Use OpenGL 2.1
+    //Use OpenGL 3.1
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 3 );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
-            
+    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );        
+  
     title = _name;
     window = SDL_CreateWindow(title.c_str(),
     				SDL_WINDOWPOS_CENTERED,
@@ -51,13 +55,13 @@ Context::Context(int _width, int _height, const std::string& _name ) : window_wi
     }
     
     //CUSTOM INIT
+    glDepthRange(0,1);
     glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_FALSE);  
+    glDepthMask(GL_TRUE);  
     glDepthFunc(GL_LESS); 
+    glDisable(GL_CULL_FACE);
     
-    glEnable(0x8642);
-    glEnable(GL_POINT_SMOOTH);
-
+   
     
 }
 
@@ -67,6 +71,28 @@ Context::~Context()
    	SDL_Quit();
 }
 
+void Context::SetMouseButton(SDL_MouseButtonEvent& b)
+{
+	 if(editor)
+	 {
+		 if(b.button == SDL_BUTTON_LEFT)
+		 {
+		 	editor->EditRiggerPoint();	
+		 }
+		 else if(b.button == SDL_BUTTON_RIGHT)
+		 {
+	   
+	  	 }
+  	 }
+    //handle a left-click
+}
+
+
+void Context::Bind(Editor * editor_ )
+{
+	editor = editor_;
+
+}
 
 void Context::SetMouseCoords()
 {	int x, y;

@@ -1,9 +1,20 @@
 #include "turtle.h"
 
-Shader::Shader(std::string&& path_, GLuint type_ ) : path(path_)
-{	
+Shader::Shader()
+{
 
-	
+}
+
+Shader::Shader(std::string&& path_, GLuint type_ ) 
+{	
+	Build(std::move(path_), type_ );
+	  
+}
+
+void Shader::Build(std::string&& path_, GLuint type_)
+{
+	path = path_;
+		
 	id = glCreateShader( type_ );
 	std::ifstream buffer(path_,std::ios::binary|std::ios::ate);
 	if (!buffer) 
@@ -19,12 +30,16 @@ Shader::Shader(std::string&& path_, GLuint type_ ) : path(path_)
   	  source.resize(length,0);
   	 
   	  buffer.read(&source[0],length);
-  	
-  	  
-}
+	
+	}
 	
 	
 
+}
+
+GLuint Shader::GetId()
+{
+	return (id);
 }
 
 int Shader::Compile()

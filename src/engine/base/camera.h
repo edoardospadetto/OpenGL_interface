@@ -14,7 +14,7 @@ class Camera
 		
 		float orthox=10.0f, orthoy = 10.0f;
 		
-		float speed ; 
+		float speed =0.0 ; 
 		float yaw=0, pitch=0; 
 		
 		bool design = true;
