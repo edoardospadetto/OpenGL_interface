@@ -16,30 +16,7 @@ void Drawer3d::LoadUniforms(Camera * camera)
 	 glUniformMatrix4fv(mod,1, false,  obj->GetModMatrix());
 }
 
-void Drawer3d::DrawPoint(float x , float y, float z)
-{
 
-	 float point[3] = {x,y,z};
-	 
-	 glBufferData( GL_ARRAY_BUFFER, 3*sizeof(float) , (&point[0]), GL_DYNAMIC_DRAW );
-	 	 
-	 pos = glGetAttribLocation( program , "svert" );
-	 tex = glGetAttribLocation( program , "stex" );
-	  
-	 glVertexAttribPointer( pos, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0  );	 
-	 glVertexAttribPointer( tex, 2, GL_FLOAT, GL_TRUE, 5 * sizeof(float), (void*)(0*sizeof(float)) );
-	
-	glDrawArrays(GL_POINTS, 0 , 3);
-	
-	 glEnableVertexAttribArray( pos);
-	 glEnableVertexAttribArray( tex);
-	 
-	 glDisableVertexAttribArray( pos);
-	 glDisableVertexAttribArray( tex);
-	  
-
-
-}
 
 void Drawer3d::Draw(Asset *asset, Camera *camera )
 {
@@ -67,12 +44,12 @@ int Drawer3d::LoadAsset(Asset *asset, Camera *camera)
 	}
 	
 		
-	 //std::cout << asset->GetVertNum() << "  "  << asset->GetIdxNum() << "  "   << *asset->GetBuffer() << "  "   << *asset->GetIdx() << "  "   << std::endl;
+	
 	 glBufferData( GL_ARRAY_BUFFER, asset->GetVertNum()*5*sizeof(float) , ((float*) asset->GetBuffer()), GL_DYNAMIC_DRAW );
 	
 	 glBufferData( GL_ELEMENT_ARRAY_BUFFER, asset->GetIdxNum()*sizeof(int) , ((int*) asset->GetIdx()), GL_DYNAMIC_DRAW );
 	 
-	  pos = glGetAttribLocation( program , "svert" );
+	 pos = glGetAttribLocation( program , "svert" );
 	 tex = glGetAttribLocation( program , "stex" );
 
 

@@ -1,5 +1,5 @@
 #include "turtle.h"
-
+#include <fstream>
 GameObj3d::GameObj3d(std::string&& model,std::string&& texture,std::string&& name_) : 
 	name(name_), model_matrix(1.0)
 {
@@ -79,14 +79,61 @@ void GameObj3d::SetScale(float x , float y, float z){
 
 }
 
+
+
 Asset* GameObj3d::GetAsset(){return asset;}
-
 float* GameObj3d::GetModMatrix(){return &(model_matrix[0][0]);}
-
 float* GameObj3d::GetScale(){return &(scale[0]);}
 float* GameObj3d::GetRot(){return &(rot[0]);}
 float* GameObj3d::GetPos(){return &(pos[0]);}
 
+/*
+void GameObj3d::SetSkeleton(std::vector<float> nodes_, std::vector<int> edges_)
+{
+	skeleton.nodes = nodes;
+	skeleton.edges = edges;	
+
+}
+void GameObj3d::SaveSkeleton(std::string && file_)
+{
+	std::ofstream sk_out (path_, std::ofstream::out);
+	
+	sk_out << skeleton.nodes.size()  << skeleton.edges.size();
+	
+	for(int i =0 ; i<skeleton.nodes.size()  ; i++)
+	{
+		sk_out <<  skeleton.nodes[i];
+	}
+	for(int i =0 ; i<skeleton.edges.size()  ; i++)
+	{
+		sk_out <<  skeleton.edges[i];
+	}
+}
+
+void GameObj3d::LoadSkeleton(std::string && path_)
+{
+	int nodesize, edgesize;
+	std::vector<int> edges_tmp;
+	std::vector<float> nodes_tmp;
+	std::ifstream sk_int (path_, std::ifstream::int);
+
+	sk_in >> skeleton.nodes.size()  >> skeleton.edges.size();
+	
+	for(int i =0 ; i<nodesize()  ; i++)
+	{
+		nodes_tmp.push_back(0.0);
+		sk_in >> nodes_tmp[in] ;
+	}
+	for(int i =0 ; i<edgesize()  ; i++)
+	{
+		nodes_tmp.push_back(0.0);
+		sk_in >> nodes_tmp[i] ;
+	}
+	
+	
+}
+
+*/
 
 
 GameObj3d::~GameObj3d()

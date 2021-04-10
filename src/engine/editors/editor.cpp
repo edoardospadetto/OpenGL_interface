@@ -136,54 +136,13 @@ void Editor::Dot()
 {	if(points.size() >0)
 	{
 	// DRAW EDGES 
-	std::vector<float> tmp_;
-	for(int i=0; i< parents.size(); i++)
+		for(int i=0; i< points.size()/6; i++)
 	{	
-		if(parents[i] >= 0 & parents[i] != i)
-		{
-		tmp_.push_back(points[i*6 +0]);
-		tmp_.push_back(points[i*6 +1]);
-		tmp_.push_back(points[i*6 +2]);
-		tmp_.push_back(0.0);
-		tmp_.push_back(0.0);
-		tmp_.push_back(1.0);
-		tmp_.push_back(points[parents[i]*6 +0]);
-		tmp_.push_back(points[parents[i]*6 +1]);
-		tmp_.push_back(points[parents[i]*6 +2]);
-		tmp_.push_back(1.0);
-		tmp_.push_back(0.0);
-		tmp_.push_back(0.0);
-		}
+		points[6*i+3] = 0.0;
+		points[6*i+4] = 0.0;
+		points[6*i+5] = 1.0;
 	}
-	//std::cout << tmp_.size()<< endl;
 	
-	/*GLuint pos, col, view;
-	
-	glClear(GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-	
-	glUseProgram(EditorProgram);
-	glBindBuffer(GL_ARRAY_BUFFER, evbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eibo );
-	glPointSize(5.0);
-	view = glGetUniformLocation( EditorProgram , "sview" );
-	pos = glGetAttribLocation( EditorProgram , "pos" ); 
-	col = glGetAttribLocation( EditorProgram , "col" );
-	  
-	glUniformMatrix4fv(view,1, false,  camera->GetViewMatrix() );
-	glVertexAttribPointer( pos, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0  );	 
-	glVertexAttribPointer( col, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3*sizeof(float)) );
-	
-	glBufferData( GL_ARRAY_BUFFER, tmp_.size()*sizeof(float) , (float*) &(tmp_[0]), GL_DYNAMIC_DRAW );
-	//glBufferData( GL_ELEMENT_ARRAY_BUFFER, parents.size()*sizeof(int) , &(pa[0]), GL_DYNAMIC_DRAW );
-	  
-	glEnableVertexAttribArray( pos);
-	glEnableVertexAttribArray( col);
-	
-	glDrawArrays( GL_LINE_STRIP, 0 , tmp_.size()/6 );
-	
-	glDisableVertexAttribArray( pos);*/
-	//yyy
 	
 	
 	GLuint pos, col, view;
@@ -191,10 +150,11 @@ void Editor::Dot()
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 	
+	glLineWidth(5.0);
 	glUseProgram(EditorProgram);
 	glBindBuffer(GL_ARRAY_BUFFER, evbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eibo );
-	glPointSize(5.0);
+	glPointSize(12.0);
 	view = glGetUniformLocation( EditorProgram , "sview" );
 	pos = glGetAttribLocation( EditorProgram , "pos" ); 
 	col = glGetAttribLocation( EditorProgram , "col" );
@@ -217,7 +177,12 @@ void Editor::Dot()
 	
 	
 	
-	
+	for(int i=0; i< points.size()/6; i++)
+	{	
+		points[6*i+3] = 1.0;
+		points[6*i+4] = 0.3;
+		points[6*i+5] = 0.3;
+	}
 	
 	
 	// DRAW DOTS
@@ -268,10 +233,10 @@ void Editor::Dot()
 	
 	 //
 
-	
+	glBufferData( GL_ARRAY_BUFFER, points.size()*sizeof(float) , (float*) &(points[0]), GL_DYNAMIC_DRAW );
 	
 
-	  
+	glClear(GL_DEPTH_BUFFER_BIT);
 
 	
 	glEnableVertexAttribArray( pos);
@@ -286,11 +251,11 @@ void Editor::Dot()
 	glDisableVertexAttribArray( col);
 	
 	 //Erase mouse point
-	 for (int i=0; i<parents.size() ; i++)
+	 /*for (int i=0; i<parents.size() ; i++)
 	 {
 	 std::cout << i << "  "<<  parents[i] << std::endl;
 	 }
-	 std::cout << std::endl;
+	 std::cout << std::endl;*/
 	}
 	
 }
@@ -300,7 +265,15 @@ void Editor :: RiggerWindow()
 	 ImGui::Begin("Rigger"); 
 	 ImGui ::Checkbox("edit", &edit_points); ImGui::SameLine();
 	 ImGui::InputInt("selected point", &selected_point); 
+	 ImGui ::Checkbox("fix", &fix_point);
 	 
+	 if(!fix_point)
+	 {
+	 	fixed_points = points;
+	 	
+	 }
+	 
+
 	 
 	 //point, color 6 entries, parents two entries
 	 if( ImGui::Button("Add point") )
@@ -385,7 +358,77 @@ Editor::~Editor()
 
 }
 
+float norm(float x, float y, float z)
+{
+	return std::sqrt(x*x+y*y+z*z);
+}
 
+void Editor::FindNearest(GameObj3d *obj)
+{
+	for (int i =0; i<obj->asset->vertnum; i++)
+		{
+			//compute weights 
+			float nearest= norm(obj->asset->buffer[5*i+0] -points[0], 
+					     obj->asset->buffer[5*i+1] -points[1],
+					     obj->asset->buffer[5*i+2] -points[2] ); 
+					  
+			int nearest_idx = 0;
+			
+			for (int j = 0; j <points.size()/6; ++j)
+			{
+				if(nearest >= norm(obj->asset->buffer[5*i+0] -fixed_points[6*j], 
+						   obj->asset->buffer[5*i+1] -fixed_points[6*j+1],
+						   obj->asset->buffer[5*i+2] -fixed_points[6*j+2]))
+				{
+					nearest =  norm(obj->asset->buffer[5*i+0] -fixed_points[6*j], 
+						   obj->asset->buffer[5*i+1] -fixed_points[6*j+1],
+						   obj->asset->buffer[5*i+2] -fixed_points[6*j+2]);
+					nearest_idx = j;
+				}	
+			}
+			 
+			nearest_node.push_back(nearest_idx);
+			
+		
+		
+		}
+}
+void Editor::MoveSkeleton(GameObj3d *obj)
+{
+	
+	
+	if(fix_point)
+	{	
+		if(once_weights)
+		{
+		once_weights = false;
+		FindNearest(obj);
+		}
+		
+		std::vector<float> deltas;
+		for(int i=0; i<points.size()/6 ; i++)
+		{
+			deltas.push_back(points[6*i]-fixed_points[6*i]);
+			deltas.push_back(points[6*i+1]-fixed_points[6*i+1]);
+			deltas.push_back(points[6*i+2]-fixed_points[6*i+2]);
+			
+		}
+		
+		
+		for (int i =0; i<obj->asset->vertnum; i++)
+		{
+			
+			 
+			obj->asset->buffer[5*i+0] += deltas[3*nearest_node[i]+0];
+			obj->asset->buffer[5*i+1] += deltas[3*nearest_node[i]+1];  
+			obj->asset->buffer[5*i+2] += deltas[3*nearest_node[i]+2];
+			
+		
+		
+		}
+		fixed_points = points;
+	}	
+}
 
 
 

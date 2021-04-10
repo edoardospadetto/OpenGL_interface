@@ -4,6 +4,7 @@
 #include "../external/stb_image.h" 
 
 class Drawer;
+class Editor; 
 
 struct Texture
 {
@@ -17,7 +18,7 @@ class Asset
 
 	private:
 
-
+		friend Editor;
 
 		float* vert;
 		float* textr;
@@ -27,7 +28,7 @@ class Asset
 		float* buffer;
 
 		int idxnum;
-		int vertnum;
+		int vertnum; //must be multiplied by the dimension of a single vertex (*5)
 		
 		float position[3] = {};
 	public: 

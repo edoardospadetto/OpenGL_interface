@@ -47,19 +47,8 @@ int GraphicLoop(Context* current_context, Drawer3d* drawer, Gui * orientation, T
 			editor.RiggerWindow();
 			camera->UpdateViewMatrix();
 			editor.Dot();
+			editor.MoveSkeleton(zero);
 
-		       
-		       
-		    
-		                            
-	
-		        
-		  
-	            
-	   
-	            
-		
-			
 			
 			editor.EndFrame();
 			current_context->EndFrame();
@@ -91,7 +80,7 @@ int main()
 	
 	terrain->LinkVerts();
 	
-	GameObj3d zero("./assets/skull.obj","./assets/test.jpg", "plant0");
+	GameObj3d zero("./assets/stone.obj","./assets/test.jpg", "plant0");
 	
 	Shader vertex3d("./shaders/vertexshader.3d", GL_VERTEX_SHADER);
 	Shader fragment3d("./shaders/fragmentshader.3d", GL_FRAGMENT_SHADER);

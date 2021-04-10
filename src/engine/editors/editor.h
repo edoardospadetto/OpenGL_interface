@@ -14,9 +14,6 @@ class Editor
 		Camera * camera = nullptr;
 		
 		//Mods of the Editor
-		//Rigger rigger; 
-		
-		
 		int watchfromcase = 0; 
 		float orthox = 10.0, orthoy = 10.0;
 		
@@ -27,11 +24,17 @@ class Editor
 		GLuint evbo; 
 		GLuint eibo;
 		
+		//Current GameObj
+		GameObj3d* object;
+		
 		//RIGGER TOOL
 		int selected_point=0;
 		bool edit_points = false;
-		
+		bool fix_point = false;
+		bool once_weights = true;
+		std::vector<int> nearest_node;
 		std::vector<int> parents;
+		std::vector<float> fixed_points;
 		std::vector<float> points;
 		std::vector<float> colors;
 		
@@ -42,15 +45,18 @@ class Editor
 		
 		void EditObjModel(GameObj3d * obj);
 		void WatchFrom(GameObj3d * obj);
+		void MoveSkeleton(GameObj3d * obj);
+		void FindNearest(GameObj3d * obj);
+		
 		void StartFrame();
 		void EndFrame();
 		void Dot();
 		
+		//rigger
 		void EditRiggerPoint();
 		void RiggerWindow();
 		
-		void RenderRiggerPoints();
-		void RenderRiggerEdges();
+	
 
 
 

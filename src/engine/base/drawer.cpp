@@ -5,8 +5,7 @@ Drawer::Drawer()
 	 program = glCreateProgram();
 	 glGenBuffers( 1, &vbo );
 	 glGenBuffers( 1, &ibo );
- 
-	
+ 	
 }
 
 Drawer::~Drawer()

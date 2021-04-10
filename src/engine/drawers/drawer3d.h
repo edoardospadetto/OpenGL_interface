@@ -17,16 +17,20 @@ class Drawer3d: public Drawer
 		GameObj3d *obj;
 	public: 
 		Drawer3d();
-		void DrawPoint(float x, float y , float z);
+		
 		void SetModel(GameObj3d &obj_);
 		void LoadUniforms(Camera * camera);
+		
 		const void* GetVert(const Asset *asset);
 		const void* GetIdx(const Asset *asset);
+		
 		int GetNumVert(const Asset *asset);
 		int GetNumIdx(const Asset *asset);
+		
+		void Draw(Asset *asset, Camera* camera);
 		int Render(Asset *asset);
 		int LoadAsset(Asset *asset, Camera *camera);
-		void Draw(Asset *asset, Camera* camera);
+		
 		
 		
 	 
