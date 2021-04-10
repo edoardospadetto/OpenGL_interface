@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>    // std::any_of
+#include <cmath>
 #include <iostream>
 #include "../external/OBJ_Loader.h"
 
@@ -48,7 +49,7 @@ int Asset::LoadObj(std::string &&  path)
 {
 	printf("Loading OBJ file %s...\n", path.c_str());
 
-	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
+	std::vector<int> vertexIndices, uvIndices, normalIndices;
 	std::vector<float> temp_vertices; 
 	std::vector<float> temp_uvs;
 	std::vector<float> temp_normals;
@@ -102,7 +103,7 @@ int Asset::LoadObj(std::string &&  path)
 			char* tmpbuffer = (char*)malloc(sizeof(char)*256);
 			fgets(tmpbuffer,256,file);
 			//fscanf(file, "%s", tmpbuffer);
-			unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
+			int vertexIndex[4], uvIndex[4], normalIndex[4];
 			
 			
 			int check = sscanf(tmpbuffer, "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", 
@@ -182,9 +183,9 @@ int Asset::LoadObj(std::string &&  path)
 	for( unsigned int i=0; i<idxnum; i++){
 
 		// Get the indices of its attributes
-		unsigned int vertexIndex = vertexIndices[i];
-		unsigned int uvIndex = uvIndices[i];
-		unsigned int normalIndex = normalIndices[i];
+		int vertexIndex = abs(vertexIndices[i]);
+		int uvIndex = abs(uvIndices[i]);
+		int normalIndex = abs(normalIndices[i]);
 		
 		idx[i] = i;
 		// Get the attributes thanks to the index

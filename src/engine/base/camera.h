@@ -31,6 +31,7 @@ class Camera
 		
 		void SetLook(float x, float y , float z);
 		glm::vec3 * GetLook();
+		void GetOrtho(float*x, float*y);
 		void Move();
 		void Mouse2Look(float x, float y);
 		void UpdateViewMatrix();

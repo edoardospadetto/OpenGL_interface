@@ -3,6 +3,12 @@
 
 class Asset;
 
+struct skeleton
+{
+	int* edges ; 
+	float* nodes;		
+};
+
 class GameObj3d
 {
     float pos[3] = {0.0,0.0,0.0};
@@ -11,6 +17,7 @@ class GameObj3d
     glm::mat4 model_matrix;
     Asset *asset= nullptr;
     std::string name;
+    
     public:
         
         GameObj3d(std::string&& model, std::string&& texture, std::string&& name);

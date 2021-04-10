@@ -91,7 +91,7 @@ int main()
 	
 	terrain->LinkVerts();
 	
-	GameObj3d zero("./assets/stone.obj","./assets/plant.tga", "plant0");
+	GameObj3d zero("./assets/skull.obj","./assets/test.jpg", "plant0");
 	
 	Shader vertex3d("./shaders/vertexshader.3d", GL_VERTEX_SHADER);
 	Shader fragment3d("./shaders/fragmentshader.3d", GL_FRAGMENT_SHADER);

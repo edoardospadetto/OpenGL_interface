@@ -98,7 +98,11 @@ float* Camera::GetHalfMatrix()
 	return &(half[0][0]);
 }
 
-
+void Camera::GetOrtho(float* x, float* y)
+{
+	*x = orthox;
+	*y = orthoy;
+}
 
 void Camera::Mouse2Look(float x, float y)
 {	

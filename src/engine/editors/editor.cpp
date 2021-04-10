@@ -136,6 +136,56 @@ void Editor::Dot()
 {	if(points.size() >0)
 	{
 	// DRAW EDGES 
+	std::vector<float> tmp_;
+	for(int i=0; i< parents.size(); i++)
+	{	
+		if(parents[i] >= 0 & parents[i] != i)
+		{
+		tmp_.push_back(points[i*6 +0]);
+		tmp_.push_back(points[i*6 +1]);
+		tmp_.push_back(points[i*6 +2]);
+		tmp_.push_back(0.0);
+		tmp_.push_back(0.0);
+		tmp_.push_back(1.0);
+		tmp_.push_back(points[parents[i]*6 +0]);
+		tmp_.push_back(points[parents[i]*6 +1]);
+		tmp_.push_back(points[parents[i]*6 +2]);
+		tmp_.push_back(1.0);
+		tmp_.push_back(0.0);
+		tmp_.push_back(0.0);
+		}
+	}
+	//std::cout << tmp_.size()<< endl;
+	
+	/*GLuint pos, col, view;
+	
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+	
+	glUseProgram(EditorProgram);
+	glBindBuffer(GL_ARRAY_BUFFER, evbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eibo );
+	glPointSize(5.0);
+	view = glGetUniformLocation( EditorProgram , "sview" );
+	pos = glGetAttribLocation( EditorProgram , "pos" ); 
+	col = glGetAttribLocation( EditorProgram , "col" );
+	  
+	glUniformMatrix4fv(view,1, false,  camera->GetViewMatrix() );
+	glVertexAttribPointer( pos, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0  );	 
+	glVertexAttribPointer( col, 3, GL_FLOAT, GL_TRUE, 6 * sizeof(float), (void*)(3*sizeof(float)) );
+	
+	glBufferData( GL_ARRAY_BUFFER, tmp_.size()*sizeof(float) , (float*) &(tmp_[0]), GL_DYNAMIC_DRAW );
+	//glBufferData( GL_ELEMENT_ARRAY_BUFFER, parents.size()*sizeof(int) , &(pa[0]), GL_DYNAMIC_DRAW );
+	  
+	glEnableVertexAttribArray( pos);
+	glEnableVertexAttribArray( col);
+	
+	glDrawArrays( GL_LINE_STRIP, 0 , tmp_.size()/6 );
+	
+	glDisableVertexAttribArray( pos);*/
+	//yyy
+	
+	
 	GLuint pos, col, view;
 	
 	glClear(GL_DEPTH_BUFFER_BIT);
@@ -159,7 +209,8 @@ void Editor::Dot()
 	glEnableVertexAttribArray( pos);
 	glEnableVertexAttribArray( col);
 	
-	glDrawElements( GL_LINE_STRIP, parents.size() , GL_UNSIGNED_INT, NULL );
+	//glDrawArrays( GL_LINES, 0 , points.size()/6 );
+	glDrawElements( GL_LINES, parents.size() , GL_UNSIGNED_INT, NULL );
 	
 	glEnableVertexAttribArray( pos);
 	glEnableVertexAttribArray( col);
@@ -276,7 +327,7 @@ void Editor :: RiggerWindow()
 		 ImGui::InputFloat("X ", &(points[selected_point*6]), 0.01f, 1.0f, "%.3f"); 
 		 ImGui::InputFloat("Y ", &(points[selected_point*6+1]), 0.01f, 1.0f, "%.3f"); 
 		 ImGui::InputFloat("Z ", &(points[selected_point*6+2]), 0.01f, 1.0f, "%.3f");
-		 ImGui::InputInt("parent", &(parents[selected_point+2]));
+		 ImGui::InputInt("parent", &(parents[2*selected_point+1]));
 		 
 	 }
 	 else {selected_point = points.size()/6 ;}
@@ -289,6 +340,7 @@ void Editor :: EditRiggerPoint()
 {	
 
 	float x,y;
+	camera->GetOrtho(&orthox, &orthoy);
 	context->GetMouseCoords(x,y);
 	x = x*2*orthox;
 	y = y*2*orthoy;
