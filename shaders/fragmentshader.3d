@@ -1,12 +1,13 @@
 #version 330 core
 out vec4 FragColor;
 in vec2 TexCoord;
-
+in vec3 Frag_norm;
 
 uniform sampler2D ourTexture;
 
 void main()
-{
-    FragColor = texture(ourTexture, TexCoord); //vec4(1.0,1.0,1.0,1.0);//vec4(TexCoord.x, TexCoord.y , 0.0, 0.0);//
+{   
+    vec3 light = vec3(-1.0,1.0,0.0);
+    FragColor = texture(ourTexture, TexCoord)* max(0.0,dot(light,Frag_norm)); 
  
 }

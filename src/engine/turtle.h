@@ -8,7 +8,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp> 
 #include <glm/gtx/norm.hpp> 
-#include <glm/gtx/rotate_vector.hpp> 
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/vector_angle.hpp> 
 
 #include <SDL2/SDL.h>
 #include "GL/glew.h"

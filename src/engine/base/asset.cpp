@@ -174,10 +174,11 @@ int Asset::LoadObj(std::string &&  path)
 
 	}
 	
+	int vals = 8;
 	vertnum = vertexIndices.size(); 
 	idxnum  = vertexIndices.size();
 	idx = new int[idxnum];
-	buffer = new float[idxnum*5];
+	buffer = new float[idxnum*vals];
 	
 	// For each vertex of each triangle
 	for( unsigned int i=0; i<idxnum; i++){
@@ -189,17 +190,21 @@ int Asset::LoadObj(std::string &&  path)
 		
 		idx[i] = i;
 		// Get the attributes thanks to the index
-		buffer[5*i+0] = temp_vertices[3*(vertexIndex-1)+0];
-		buffer[5*i+1] = temp_vertices[3*(vertexIndex-1)+1];
-		buffer[5*i+2] = temp_vertices[3*(vertexIndex-1)+2];
+		buffer[vals*i+0] = temp_vertices[3*(vertexIndex-1)+0];
+		buffer[vals*i+1] = temp_vertices[3*(vertexIndex-1)+1];
+		buffer[vals*i+2] = temp_vertices[3*(vertexIndex-1)+2];
 		
-		buffer[5*i+3] = temp_uvs[2*(uvIndex-1)+0];
-		buffer[5*i+4] = temp_uvs[2*(uvIndex-1)+1];
+		buffer[vals*i+3] = temp_uvs[2*(uvIndex-1)+0];
+		buffer[vals*i+4] = temp_uvs[2*(uvIndex-1)+1];
 		
-		//float nx = temp_normals[3*(normalIndex-1)+0];
-		//float ny = temp_normals[3*(normalIndex-1)+1];
-		//float nz = temp_normals[3*(normalIndex-1)+2];
 		
+		buffer[vals*i+5]=temp_normals[3*(normalIndex-1)+0];
+		buffer[vals*i+6]=temp_normals[3*(normalIndex-1)+1];
+		buffer[vals*i+7]=temp_normals[3*(normalIndex-1)+2];
+		
+		//std::cout << buffer[vals*i+5] << "  "
+		//	<< buffer[vals*i+6] << "  "
+		//	<< buffer[vals*i+7] << "  " << std::endl;
 		// Put the attributes in buffers
 		//out_vertices.push_back(vertex);
 		//out_uvs     .push_back(uv);
@@ -217,13 +222,14 @@ int Asset::LoadObj(std::string &&  path)
 
 void Asset::ResetOrigin()
 {
+	int val = 8;
 	float avgx=0.0f, avgy=0.0f, avgz=0.0f ;
 
 	for(int i =0; i<vertnum; i++)
 	{
-		avgx+=buffer[5*i+0]; 
-		avgy+=buffer[5*i+1]; 
-		avgz+=buffer[5*i+2]; 
+		avgx+=buffer[val*i+0]; 
+		avgy+=buffer[val*i+1]; 
+		avgz+=buffer[val*i+2]; 
 	}
 	
 	avgx*=(1.0f/float(vertnum));
@@ -232,9 +238,9 @@ void Asset::ResetOrigin()
 	
 		for(int i =0; i<vertnum; i++)
 	{
-		buffer[5*i+0]-=avgx; 
-		buffer[5*i+1]-=avgy; 
-		buffer[5*i+2]-=avgz; 
+		buffer[val*i+0]-=avgx; 
+		buffer[val*i+1]-=avgy; 
+		buffer[val*i+2]-=avgz; 
 	}		
 	
 	

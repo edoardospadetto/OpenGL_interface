@@ -14,6 +14,7 @@ class Drawer3d: public Drawer
 		GLuint tex;
 		GLuint view;
 		GLuint mod;
+		GLuint norm; 
 		GameObj3d *obj;
 	public: 
 		Drawer3d();

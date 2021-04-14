@@ -4,12 +4,12 @@ IMGUI_DIR = ./src/external/imgui
 CC = g++ -pthread
 PATHS = -I ./src/engine/ -I ./src/external/ -I ./src/external/imgui
 LIBS = -lSDL2 -lGL -lGLU -lGLEW
-FLAGS = -g
+FLAGS = -ggdb3
 
 BASE = context shader drawer asset camera gameobj3d
 BASEDIR = ./src/engine/base/
 
-DRAWERS = drawer3d orientation terrain
+DRAWERS = drawer3d orientation terrain riggerdrawer
 DRAWERSDIR = ./src/engine/drawers/
 
 EDITORS =editor

@@ -1,0 +1,33 @@
+#version 330
+in vec3 svert;
+in vec3 color; 
+in vec3 norm;
+
+out vec3 Frag_norm;
+out vec3 Frag_col;
+
+uniform mat4 sview;
+uniform mat4 modl;
+
+void main()
+{ 
+
+    // 1) Object arrives with up pointing to z, front to y, and right to x, also camera in this coordinates
+    // Move camera to origin, translate object , and look at certain direction.
+    
+    vec4 pos = sview*modl*vec4( svert, 1.0)  ;   
+    
+    // 2)  Now move to OPENGL coordinates front is -z , x right, y up.
+    // pos = vec4(pos.x, pos.z, -pos.y,  1.0 );
+    
+    // 3) Apply Perspective given a certain distance of the focal point  
+    
+                                            //*vec4( svert.x/(-svert.z-5.1), svert.y/(-svert.z-5.1), max(-svert.z+1, -5) /100.0,  1 );
+    
+    float zper;
+ 
+    gl_Position =  pos;//vec4( -pos.x*2.5/pos.z,   -pos.y*2.5/pos.z , zper ,1.0);// -(pos.z-1.0)/100.0 ,  1.0 );
+    Frag_norm = norm;
+    Frag_col = color;
+    
+}
